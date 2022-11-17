@@ -1,4 +1,4 @@
-class MoviesController < ApplicationController
+class Api::V2::MoviesController < ApplicationController
   before_action :set_movie, only: %i[ show update destroy ]
 
   # GET /movies
@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
     @movie = Movie.new(movie_params)
 
     if @movie.save
-      render json: @movie, status: :created, location: @movie
+      render json: @movie, status: :created, location: api_movie_url(@movie)
     else
       render json: @movie.errors, status: :unprocessable_entity
     end

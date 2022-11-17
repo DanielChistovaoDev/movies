@@ -1,7 +1,16 @@
-Rails.application.routes.draw do
-  resources :movies
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+require 'api_constraints'
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+Rails.application.routes.draw do
+  namespace :api, defaults: { format: :json } do
+    scope module: :v2,
+      constraints: ApiConstraints.new(version: 2, default: false) do
+        resources :movies
+      end
+
+    scope module: :v1,
+      constraints: ApiConstraints.new(version: 1, default: true) do
+        resources :movies
+      end
+
+  end
 end
